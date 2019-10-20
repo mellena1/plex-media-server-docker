@@ -1,0 +1,12 @@
+kind: pipeline
+name: default
+
+steps:
+- name: Build-image-and-push
+  image: plugins/docker
+  settings:
+    repo: mellena1/pms-docker
+    auto_tag: true
+    username: mellena1
+    password:
+      from_secret: password
