@@ -1,41 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Client name="iOS">
+  <!-- From: https://github.com/classicjazz/plex-client-profiles/blob/master/iOS.xml -->
   <!-- Author: Plex Inc. -->
-  <!-- This profile is used by A5 and higher devices (starting with iPhone 4S and iPad 3) -->
+  <!-- This profile is used by A10X (and later) iOS (2017+) devices using the MPV ("experimental") video player. Currently, this requires a Plex Pass subscription. -->
+  <!-- Because Plex does not currently support TrueHD or DTS-MA playback in the client, this audio is transcoded to FLAC. -->  
   <Settings>
     <Setting name="DirectPlayStreamSelection" value="true" />
     <Setting name="StreamUnselectedIncompatibleAudioStreams" value="true" />
   </Settings>
   <TranscodeTargets>
-    <VideoProfile container="mp4" codec="h264" audioCodec="aac" subtitleCodec="mov_text" context="static" />
-    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac,mp3" subtitleCodec="eia_608_embedded" context="streaming">
-      <Setting name="HlsExtraMultiChannelAudioStream" value="ac3" />
-    </VideoProfile>
-    <MusicProfile container="mp3" codec="mp3" />
+    <VideoProfile container="mkv" codec="h264,h265" audioCodec="flac" />
+    <MusicProfile container="flac" codec="flac" />
     <PhotoProfile container="jpeg" />
-    <SubtitleProfile protocol="hls" container="webvtt" subtitleCodec="webvtt"/>
+    <SubtitleProfile container="webvtt" subtitleCodec="webvtt"/>
   </TranscodeTargets>
   <DirectPlayProfiles>
-    <VideoProfile container="mp4,mov" codec="h264,mpeg4" audioCodec="aac" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <!-- Allow Direct Play of HLS content  -->
-    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac" />
+    <VideoProfile container="mkv,mov,mp4,mpegts,mpeg,mpegvideo,avi,flv,ogg" codec="h264,hevc,vp8,vp9,h263,mpeg1video,mpeg2video,mpeg4,vc1" audioCodec="aac,aac_latm,ac3,alac,flac,dca,vorbis,opus,eac3,mp1,mp2,mp3" subtitleCodec="ass,dvb_subtitle,vobsub,eia_608,pgs,microdvd,movtext,ssa,srt" />
     <MusicProfile container="mp3" codec="mp3" />
-    <MusicProfile container="mp4" codec="aac" />
-    <MusicProfile container="mp4" codec="alac" />
-    <!-- CHANGED: added in h265 direct play support -->
-    <VideoProfile container="mp4" codec="hevc" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <VideoProfile container="mp4" codec="h265" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <!-- END CHANGED -->
+    <MusicProfile container="m4a" codec="aac,alac" />
+    <MusicProfile container="mp4" codec="aac,he-aac,ac3,eac3,alac" />
+    <MusicProfile container="flac,mkv" codec="flac" />
     <PhotoProfile container="jpeg" />
   </DirectPlayProfiles>
   <CodecProfiles>
-    <VideoCodec name="h264">
-      <Limitations>
-        <UpperBound name="video.width" value="1920" isRequired="true" />
-        <UpperBound name="video.height" value="1080" isRequired="true" />
-        <UpperBound name="video.bitDepth" value="8" />
-        <NotMatch name="video.separateFields" value="1" />
-      </Limitations>
+  <VideoCodec name="*">
+     <Limitations>
+       <UpperBound name="video.width" value="3840" />
+       <UpperBound name="video.height" value="2160" />
+       <UpperBound name="video.bitDepth" value="10" />
+     </Limitations>
     </VideoCodec>
     <VideoAudioCodec name="*">
       <Limitations>

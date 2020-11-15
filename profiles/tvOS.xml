@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Client name="tvOS">
-  <!-- Author: Plex Inc. -->
-  <!-- This profile is used by A8-based tvOS devices -->
-  <Settings>
-    <Setting name="DirectPlayStreamSelection" value="true" />
-    <Setting name="StreamUnselectedIncompatibleAudioStreams" value="true" />
-  </Settings>
+  <!-- From: https://github.com/classicjazz/plex-client-profiles/blob/master/tvOS.xml -->
+	<!-- This profile is used by A10X-based tvOS (Apple TV 4K) devices with the MPV ("experimental") video player. For more details, please see: https://freetime.mikeconnelly.com/archives/8172
+ 	Transcoding assumptions: 
+	 	container format: mkv because it supports most video/audio codecs & subtitles
+	 	video codec: keep in native formats to avoid quality loss and server CPU load associated with transcoding (e.g. h264,h265,vc1)
+	 	audio codec: if a codec is not supported natively by Apple TV (e.g. lossless codecs like TrueHD or DTS-MA, then transcode to FLAC 
+	 	(neither container nor lossless audio codec transcoding have material impact on performance)
+	-->  
   <TranscodeTargets>
-    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac,eac3,ac3,mp3" subtitleCodec="eia_608_embedded" context="streaming" />
-    <MusicProfile container="mp3" codec="mp3" />
+    <VideoProfile container="mkv" codec="h264,h265,hevc,mpeg2video,mpeg4,vc1" audioCodec="flac" subtitleCodec="ass,dvb_subtitle,vobsub,eia_608,pgs,microdvd,movtext,ssa,srt" />
+    <MusicProfile container="flac" codec="flac" />
     <PhotoProfile container="jpeg" />
-    <SubtitleProfile protocol="hls" container="webvtt" subtitleCodec="webvtt"/>
   </TranscodeTargets>
   <DirectPlayProfiles>
-    <!-- CHANGED: added in h265 direct play support -->
-    <VideoProfile container="mp4" codec="hevc" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <VideoProfile container="mp4" codec="h265" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <!-- END CHANGED -->
-    <VideoProfile container="mp4" codec="h264,mpeg4" audioCodec="aac,ac3,eac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <!-- Since tvOS may have issues direct playing mov/eac3 it has its own profile  -->
-    <VideoProfile container="mov" codec="h264,mpeg4" audioCodec="aac,ac3" subtitleCodec="mov_text,tx3g,ttxt,text" />
-    <!-- Allow Direct Play of HLS content  -->
-    <VideoProfile protocol="hls" container="mpegts" codec="h264" audioCodec="aac" />
+    <VideoProfile container="mkv,mov,mp4,mpegts,mpeg,mpegvideo,avi,flv,ogg" codec="h264,h265,hevc,vp9,h263,mpeg1video,mpeg2video,mpeg4,vc1" audioCodec="aac,ac3,alac,flac" subtitleCodec="ass,dvb_subtitle,vobsub,eia_608,pgs,microdvd,movtext,ssa,srt" />
     <MusicProfile container="mp3" codec="mp3" />
-    <MusicProfile container="mp4" codec="aac" />
+    <MusicProfile container="m4a" codec="aac,alac" />
+    <MusicProfile container="mp4" codec="aac,he-aac,ac3,eac3,alac" />
+    <MusicProfile container="flac,mkv" codec="flac" />
     <PhotoProfile container="jpeg" />
   </DirectPlayProfiles>
   <CodecProfiles>
-    <VideoCodec name="h264">
-      <Limitations>
-        <UpperBound name="video.width" value="1920" isRequired="true" />
-        <UpperBound name="video.height" value="1080" isRequired="true" />
-        <UpperBound name="video.bitDepth" value="8" />
-        <NotMatch name="video.separateFields" value="1" />
-      </Limitations>
+  <VideoCodec name="*">
+     <Limitations>
+       <UpperBound name="video.width" value="3840" />
+       <UpperBound name="video.height" value="2160" />
+       <UpperBound name="video.bitDepth" value="10" />
+     </Limitations>
     </VideoCodec>
-    <VideoAudioCodec name="aac">
+    <VideoAudioCodec name="*">
       <Limitations>
-        <UpperBound name="audio.channels" value="2" />
+        <UpperBound name="audio.channels" value="8" />
       </Limitations>
     </VideoAudioCodec>
   </CodecProfiles>
