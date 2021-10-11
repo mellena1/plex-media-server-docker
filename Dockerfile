@@ -1,3 +1,3 @@
-FROM plexinc/pms-docker:1.24.1.4931-1a38e63c6
+FROM plexinc/pms-docker:1.24.3.5033-757abe6b4
 
 COPY profiles/* /usr/lib/plexmediaserver/Resources/Profiles/
